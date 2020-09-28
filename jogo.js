@@ -85,7 +85,7 @@ const messageGetReady = {
 
   /*Coordenadas para o objeto dentro de "contexto"*/
   coordX: (canvas.width / 2) - 174/2,//Metade de canvas menos a métade do objeto, logo, este fica centralizado
-  coordY: 50,
+  coordY: (canvas.height / 2) - 152/2,
 
   /*Função para desenhar o objeto*/
   desenha(){
@@ -138,24 +138,60 @@ const flappyBird = {
   }
 };
 
+let telaAtiva = {};//Criando objeto para armazenar tela ativa do jogo
+
+/*Função para mudar a tela ativa do jogo*/
+function mudarTela(novaTela){
+  telaAtiva = novaTela;
+};
+
 /*Criando objeto para armazenar todas as telas do jogo*/
-let telas = {
+const telas = {
+  /*Tela de Início*/
   INICIO:{
+    /*Desenha todos os elementos da tela*/
+    desenha(){
+      cenario.desenha();
+      chao.desenha();
+      flappyBird.desenha();
+    
+      messageGetReady.desenha();
+    },
+    /*Atualiza os elementos da tela*/
     atualiza(){
 
+    },
+    click(){
+      mudarTela(telas.JOGO);
     }
+  }
+};
+/*Tela com a parte jogável*/
+telas.JOGO = {
+  /*Desenha todos os elementos da tela*/
+  desenha(){
+    cenario.desenha();
+    chao.desenha();
+    flappyBird.desenha();
+  },
+  /*Atualiza os elementos da tela*/
+  atualiza(){
+    flappyBird.atualiza();
   }
 };
 
 function loop(){
-  flappyBird.atualiza();
-
-  cenario.desenha();
-  chao.desenha();
-  flappyBird.desenha();
-
-  messageGetReady.desenha();
+  telaAtiva.atualiza();
+  telaAtiva.desenha();
 
   requestAnimationFrame(loop);
 }
+
+window.addEventListener('click', function(){
+  if(telaAtiva.click){
+    telaAtiva.click();
+  }
+});
+
+mudarTela(telas.INICIO);//Jogo inicia com a tela de início
 loop();
