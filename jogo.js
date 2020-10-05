@@ -50,30 +50,55 @@ const cenario = {
   };
 
 /*Criando Chão - Chão do cénario*/
-const chao = {
-  /*Coordenadas para o objeto dentro do arquivo "sprites.png"*/
-  sorceX: 0,
-  sorceY: 610,
+function criarChao(){
 
-  /*Largura e Altura do objeto dentro do arquivo e da página*/
-  itemWidth: 320,
-  itemHeight: 112,
+  const chao = {
+    /*Coordenadas para o objeto dentro do arquivo "sprites.png"*/
+    sorceX: 0,
+    sorceY: 610,
+  
+    /*Largura e Altura do objeto dentro do arquivo e da página*/
+    itemWidth: 224,
+    itemHeight: 112,
+  
+    /*Coordenadas para o objeto dentro de "contexto"*/
+    coordX: 0,
+    coordY: canvas.height - 112,
+  
+    /*Função que atualiza a posição do objeto*/
+    atualiza(){
+      const moviChao = 1;
+      const repeticao = this.itemWidth / 2;
+      const movimento = this.coordX - moviChao;
 
-  /*Coordenadas para o objeto dentro de "contexto"*/
-  coordX: 0,
-  coordY: canvas.height - 112,
+      console.log('[coordX]', this.coordX);
+      console.log('[repeticao]', repeticao);
+      console.log('[movimento]', movimento % repeticao);
 
-  /*Função para desenhar o objeto*/
-  desenha(){
-    contexto.drawImage(
-      sprites,
-      this.sorceX, this.sorceY,
-      this.itemWidth, this.itemHeight,
-      this.coordX, this.coordY,
-      this.itemWidth, this.itemHeight
-    );
+      this.coordX = movimento % repeticao;
+    },
 
+    /*Função para desenhar o objeto*/
+    desenha(){
+      contexto.drawImage(
+        sprites,
+        this.sorceX, this.sorceY,
+        this.itemWidth, this.itemHeight,
+        this.coordX, this.coordY,
+        this.itemWidth, this.itemHeight
+      );
+      contexto.drawImage(
+        sprites,
+        this.sorceX, this.sorceY,
+        this.itemWidth, this.itemHeight,
+        (this.coordX + this.itemWidth), this.coordY,
+        this.itemWidth, this.itemHeight
+      );
+  
+    }
   }
+
+  return chao;
 };
 
 /*Criando mensagem para de início do jogo*/
@@ -152,12 +177,12 @@ function criarFlappyBird(){
 
     /*Função que atualiza a posição do objeto*/
     atualiza(){
-      if(fazColisao(flappyBird, chao)){
+      if(fazColisao(flappyBird, globais.chao)){
         console.log('Game Over');
 
         som_HIT.play();
-
-        setTimeout(() => { mudarTela(telas.INICIO); }, 500);//Esperando 1/2 segundo para mudar para a tela de Início
+        
+        setTimeout(() => { mudarTela(telas.INICIO); }, 150);//Esperando 150 miléssimos de segundo para mudar para a tela de Início
 
         return;
       }
@@ -200,18 +225,19 @@ const telas = {
     /*Inicializa objeto global flappyBird*/
     inicializa(){
       globais.flappyBird = criarFlappyBird();
+      globais.chao = criarChao();
     },
     /*Desenha todos os elementos da tela*/
     desenha(){
       cenario.desenha();
-      chao.desenha();
+      globais.chao.desenha();
       globais.flappyBird.desenha();
     
       messageGetReady.desenha();
     },
     /*Atualiza os elementos da tela*/
     atualiza(){
-
+      globais.chao.atualiza();
     },
     click(){
       mudarTela(telas.JOGO);
@@ -223,7 +249,7 @@ telas.JOGO = {
   /*Desenha todos os elementos da tela*/
   desenha(){
     cenario.desenha();
-    chao.desenha();
+    globais.chao.desenha();
     globais.flappyBird.desenha();
   },
   /*Atualiza os elementos da tela*/
