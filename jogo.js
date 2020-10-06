@@ -1,5 +1,7 @@
 console.log('[DevSoutinho] Flappy Bird');
 
+let frames = 0;
+
 const som_HIT = new Audio();
 som_HIT.src = './efeitos/hit.wav';
 
@@ -71,9 +73,9 @@ function criarChao(){
       const repeticao = this.itemWidth / 2;
       const movimento = this.coordX - moviChao;
 
-      console.log('[coordX]', this.coordX);
-      console.log('[repeticao]', repeticao);
-      console.log('[movimento]', movimento % repeticao);
+      // console.log('[coordX]', this.coordX);
+      // console.log('[repeticao]', repeticao);
+      // console.log('[movimento]', movimento % repeticao);
 
       this.coordX = movimento % repeticao;
     },
@@ -156,6 +158,9 @@ function criarFlappyBird(){
     coordX: 10,
     coordY: 50,
 
+    /*Frame atual do objeto*/
+    frameAtual: 0,
+
     /*Gravidade que o Flappy Bird sofrerá para queda, corresponde ao aumento de velocidade*/
     gravity: 0.25,
 
@@ -164,6 +169,39 @@ function criarFlappyBird(){
 
     /*Pulo do Flappy Bird*/
     pulo: 4.6,
+
+    /*Movimentos realizados pelo Flappy Bird durante a animção de bater as asas, indicados pelo Y onde o se encontra o desenho de cada movimento*/
+    moviBaterAsas:[
+      {sorceY: 0}, //Asa para baixo (padrão)
+      {sorceY: 26}, //Asa no meio
+      {sorceY: 52}, //Asa para baixo
+      {sorceY: 26}, //Asa no meio
+    ],
+
+    /*Função que atualiza o frame do Flappy Bird*/
+    atualizaFrame(){
+      const intervaloFrames = 10;
+      const intervaloChegou = frames % intervaloFrames === 0;
+
+      // console.log('[frames]', frames);
+      // console.log('[intervaloFrames]', intervaloFrames);
+      // console.log('[resto]', frames % intervaloFrames)
+      // console.log('intervaloChegou:', intervaloChegou);
+      // console.log('--------------');
+      
+      if(intervaloChegou){
+        const bsIncremento = 1;
+        const incremento = bsIncremento + this.frameAtual;
+        const bsRepeticao = this.moviBaterAsas.length;
+  
+        // console.log('[incremento]', incremento);
+  
+        this.frameAtual = incremento % bsRepeticao;
+        
+        // console.log('[frameAtual]', this.frameAtual);
+
+      }
+    },
 
     /*Função que faz o Flappy Bird pular*/
     pula(){
@@ -193,9 +231,13 @@ function criarFlappyBird(){
 
     /*Função para desenhar o objeto*/
     desenha(){
+      this.atualizaFrame();
+
+      const {sorceY} = this.moviBaterAsas[this.frameAtual];
+      
       contexto.drawImage(
         sprites,
-        this.sorceX, this.sorceY,
+        this.sorceX, sorceY,
         this.itemWidth, this.itemHeight,
         this.coordX, this.coordY,
         this.itemWidth, this.itemHeight
@@ -265,6 +307,8 @@ telas.JOGO = {
 function loop(){
   telaAtiva.atualiza();
   telaAtiva.desenha();
+
+  frames++;
 
   requestAnimationFrame(loop);
 }
