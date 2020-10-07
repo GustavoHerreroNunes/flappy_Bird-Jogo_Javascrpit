@@ -60,7 +60,7 @@ function criarChao(){
     sorceY: 610,
   
     /*Largura e Altura do objeto dentro do arquivo e da página*/
-    itemWidth: 224,
+    itemWidth: 210,
     itemHeight: 112,
   
     /*Coordenadas para o objeto dentro de "contexto"*/
@@ -70,7 +70,7 @@ function criarChao(){
     /*Função que atualiza a posição do objeto*/
     atualiza(){
       const moviChao = 1;
-      const repeticao = this.itemWidth / 2;
+      const repeticao = this.itemWidth / 3;
       const movimento = this.coordX - moviChao;
 
       // console.log('[coordX]', this.coordX);
@@ -205,12 +205,12 @@ function criarFlappyBird(){
 
     /*Função que faz o Flappy Bird pular*/
     pula(){
-      console.log('==============');
-      console.log('[antes]', this.speed);
-
+      // console.log('==============');
+      // console.log('[antes]', this.speed);
+      
       this.speed = - (this.pulo);
-
-      console.log('[depois]', this.speed);
+      
+      // console.log('[depois]', this.speed);
     },
 
     /*Função que atualiza a posição do objeto*/
@@ -297,6 +297,7 @@ telas.JOGO = {
   /*Atualiza os elementos da tela*/
   atualiza(){
     globais.flappyBird.atualiza();
+    globais.chao.atualiza();
   }
   ,
   click(){
