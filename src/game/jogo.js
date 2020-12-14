@@ -1,4 +1,14 @@
-console.log('[DevSoutinho] Flappy Bird');
+/*Este é o script que contem as especificações e funcionalidades do jogo*/
+
+/*Apresentação do Jogo*/
+console.log('--------------------------------------------------');
+console.log('Flappy Bird');
+console.log('');
+console.log('Feito por:');
+console.log('GustavoHerreroNunes');
+console.log('');
+console.log('Baseado no projeto da série de vídeos de:');
+console.log('DevSoutinho');
 
 let frames = 0;
 
@@ -72,10 +82,6 @@ function criarChao(){
       const moviChao = 1;
       const repeticao = this.itemWidth / 3;
       const movimento = this.coordX - moviChao;
-
-      // console.log('[coordX]', this.coordX);
-      // console.log('[repeticao]', repeticao);
-      // console.log('[movimento]', movimento % repeticao);
 
       this.coordX = movimento % repeticao;
     },
@@ -182,35 +188,21 @@ function criarFlappyBird(){
     atualizaFrame(){
       const intervaloFrames = 10;
       const intervaloChegou = frames % intervaloFrames === 0;
-
-      // console.log('[frames]', frames);
-      // console.log('[intervaloFrames]', intervaloFrames);
-      // console.log('[resto]', frames % intervaloFrames)
-      // console.log('intervaloChegou:', intervaloChegou);
-      // console.log('--------------');
       
       if(intervaloChegou){
         const bsIncremento = 1;
         const incremento = bsIncremento + this.frameAtual;
         const bsRepeticao = this.moviBaterAsas.length;
   
-        // console.log('[incremento]', incremento);
-  
         this.frameAtual = incremento % bsRepeticao;
-        
-        // console.log('[frameAtual]', this.frameAtual);
 
       }
     },
 
     /*Função que faz o Flappy Bird pular*/
-    pula(){
-      // console.log('==============');
-      // console.log('[antes]', this.speed);
-      
+    pula(){      
       this.speed = - (this.pulo);
       
-      // console.log('[depois]', this.speed);
     },
 
     /*Função que atualiza a posição do objeto*/
@@ -298,8 +290,7 @@ telas.JOGO = {
   atualiza(){
     globais.flappyBird.atualiza();
     globais.chao.atualiza();
-  }
-  ,
+  },
   click(){
     globais.flappyBird.pula();
   }
