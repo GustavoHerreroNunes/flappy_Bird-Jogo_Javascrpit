@@ -1,14 +1,14 @@
 /*Este é o script que contem as especificações e funcionalidades do jogo*/
 
 /*Apresentação do Jogo*/
-console.log('--------------------------------------------------');
-console.log('Flappy Bird');
-console.log('');
-console.log('Feito por:');
-console.log('GustavoHerreroNunes');
-console.log('');
-console.log('Baseado no projeto da série de vídeos de:');
-console.log('DevSoutinho');
+console.info('--------------------------------------------------');
+console.info('Flappy Bird');
+console.info('');
+console.info('Feito por:');
+console.info('GustavoHerreroNunes');
+console.info('');
+console.info('Baseado no projeto da série de vídeos de:');
+console.info('DevSoutinho');
 
 let frames = 0;
 
@@ -208,7 +208,7 @@ function criarFlappyBird(){
     /*Função que atualiza a posição do objeto*/
     atualiza(){
       if(fazColisao(flappyBird, globais.chao)){
-        console.log('Game Over');
+        console.info('Game Over');
 
         som_HIT.play();
         
