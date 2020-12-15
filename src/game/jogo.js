@@ -109,6 +109,68 @@ function criarChao(){
   return chao;
 };
 
+/*Criando Canos - Obstáculos para o Flappy Bird durante o jogo*/
+function criarCanos(){
+  const canos = {
+    /*Coordenadas para o objeto dentro do arquivo "sprites.png*/
+    chao:{//Cano do chão
+      sorceX: 0,
+      sorceY: 169,
+    },
+    ceu:{//Cano do céu
+      sorceX: 52,
+      sorceY: 169,
+    },    
+  
+    /*Largura e Altura do objeto dentro do arquivo e da página*/
+    itemWidth: 52,
+    itemHeight: 400,
+
+    /*Espaço entre os canos do céu e do chão*/
+    espaco: 80,
+
+    /*Função para desenhar o objeto*/
+    desenha(){
+      canos.pares.forEach(function(par){
+        const yRandom = par.y;
+        
+        /*Cano do céu*/
+        const canoCeuX = par.x;
+        const canoCeuY = yRandom;
+        contexto.drawImage(
+          sprites,
+          this.ceu.sorceX, this.ceu.sorceY,
+          this.itemWidth, this.itemHeight,
+          canoCeuX, canoCeuY,
+          this.itemWidth, this.itemHeight
+        );
+
+        /*Cano do chão*/
+        const canoChaoX = par.x;
+        const canoChaoY = yRandom + this.itemHeight + this.espaco;//Posição do cano do céu + altura do cano do céu + espaço padrão entre canos
+        contexto.drawImage(
+          sprites,
+          this.chao.sorceX, this.chao.sorceY,
+          this.itemWidth, this.itemHeight,
+          canoChaoX, canoChaoY,
+          this.itemWidth, this.itemHeight
+        );
+        
+        par.canoCeu = {
+          x: canoCeuX,
+          y: canos.itemHeight + canoCeuY
+        }
+        par.canoChao = {
+          x: canoChaoX,
+          y: canoChaoY
+        }
+      })
+    },
+
+
+  }
+}
+
 /*Criando mensagem para de início do jogo*/
 const messageGetReady = {
   /*Coordenadas para o objeto dentro do arquivo "sprites.png"*/
