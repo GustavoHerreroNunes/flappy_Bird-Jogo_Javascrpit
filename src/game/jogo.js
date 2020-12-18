@@ -368,7 +368,7 @@ function mudarTela(novaTela){
 const telas = {
   /*Tela de Início*/
   INICIO:{
-    /*Inicializa objeto global flappyBird*/
+    /*Inicializa todos os objetos globais*/
     inicializa(){
       globais.flappyBird = criarFlappyBird();
       globais.canos = criarCanos();
