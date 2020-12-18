@@ -127,7 +127,10 @@ function criarCanos(){
     itemHeight: 400,
 
     /*Espaço entre os canos do céu e do chão*/
-    espaco: 80,
+    espaco: 110,
+
+    /*Pares de canos na carregados no navegador*/
+    pares: [],
 
     /*Função para desenhar o objeto*/
     desenha(){
@@ -139,21 +142,21 @@ function criarCanos(){
         const canoCeuY = yRandom;
         contexto.drawImage(
           sprites,
-          this.ceu.sorceX, this.ceu.sorceY,
-          this.itemWidth, this.itemHeight,
+          canos.ceu.sorceX, canos.ceu.sorceY,
+          canos.itemWidth, canos.itemHeight,
           canoCeuX, canoCeuY,
-          this.itemWidth, this.itemHeight
+          canos.itemWidth, canos.itemHeight
         );
 
         /*Cano do chão*/
         const canoChaoX = par.x;
-        const canoChaoY = yRandom + this.itemHeight + this.espaco;//Posição do cano do céu + altura do cano do céu + espaço padrão entre canos
+        const canoChaoY = yRandom + canos.itemHeight + canos.espaco;//Posição do cano do céu + altura do cano do céu + espaço padrão entre canos
         contexto.drawImage(
           sprites,
-          this.chao.sorceX, this.chao.sorceY,
-          this.itemWidth, this.itemHeight,
+          canos.chao.sorceX, canos.chao.sorceY,
+          canos.itemWidth, canos.itemHeight,
           canoChaoX, canoChaoY,
-          this.itemWidth, this.itemHeight
+          canos.itemWidth, canos.itemHeight
         );
         
         par.canoCeu = {
@@ -167,8 +170,55 @@ function criarCanos(){
       })
     },
 
+    /*Função que verifica se houve uma colisão entre o Flappy Bird e um dos canos*/
+    fazColisaoCanos(par){
+      const cabeca = globais.flappyBird.coordY;
+      const pe = globais.flappyBird.coordY + globais.flappyBird.itemHeight;//Do topo até a base do personagem
+      const bico = globais.flappyBird.coordX + globais.flappyBird.itemWidth;
+      
 
+      if(bico >= par.x && globais.flappyBird.coordX < (par.x + globais.canos.itemWidth + 1)){
+        if(cabeca <= par.canoCeu.y){
+          console.log('Ceu');
+          return true;
+        }
+
+        if(pe >= par.canoChao.y){
+          console.log('Chao');
+          return true;
+        }
+      }
+
+      return false;
+    },
+
+    atualiza(){
+      const intervaloChegou = frames % 100 === 0;
+
+      if(intervaloChegou){
+        canos.pares.push({
+          x: canvas.width,
+          y: -150 * (Math.random() + 1)
+        });
+      }
+
+      canos.pares.forEach(function(par){
+        par.x = par.x -2;
+
+        if(canos.fazColisaoCanos(par)){
+          console.log('Você perdeu');
+          mudarTela(telas.INICIO);
+        }
+
+        if(par.x + canos.itemHeight <= 0){
+          canos.pares.shift();
+        }
+        
+      });
+    }
   }
+
+  return canos;
 }
 
 /*Criando mensagem para de início do jogo*/
@@ -321,6 +371,7 @@ const telas = {
     /*Inicializa objeto global flappyBird*/
     inicializa(){
       globais.flappyBird = criarFlappyBird();
+      globais.canos = criarCanos();
       globais.chao = criarChao();
     },
     /*Desenha todos os elementos da tela*/
@@ -345,12 +396,14 @@ telas.JOGO = {
   /*Desenha todos os elementos da tela*/
   desenha(){
     cenario.desenha();
+    globais.canos.desenha();
     globais.chao.desenha();
     globais.flappyBird.desenha();
   },
   /*Atualiza os elementos da tela*/
   atualiza(){
     globais.flappyBird.atualiza();
+    globais.canos.atualiza();
     globais.chao.atualiza();
   },
   click(){
