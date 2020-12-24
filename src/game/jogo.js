@@ -248,6 +248,33 @@ const messageGetReady = {
   }
 };
 
+/*Criando mensagem para fim de jogo*/
+const messageGameOver = {
+  /*Coordenadas para o objeto dentro do arquivo "sprites.png"*/
+  sorceX: 134,
+  sorceY: 153,
+
+  /*Largura e Altura do objeto dentro do arquivo e da página*/
+  itemWidth: 226,
+  itemHeight: 160,
+
+  /*Coordenadas para o objeto dentro de "contexto"*/
+  coordX: (canvas.width / 2) - 226/2,//Metade de canvas menos a métade do objeto, logo, este fica centralizado
+  coordY: (canvas.height / 2) - 160/2,
+
+  /*Função para desenhar o objeto*/
+  desenha(){
+    contexto.drawImage(
+      sprites,
+      this.sorceX, this.sorceY,
+      this.itemWidth, this.itemHeight,
+      this.coordX, this.coordY,
+      this.itemWidth, this.itemHeight
+    );
+
+  }
+};
+
 /*Função que indica se houve colisão do Flappy Bird com o Chão*/
 function fazColisao(flappyBird, chao){
   const flappyBirdY = flappyBird.coordY + flappyBird.itemHeight;
@@ -324,7 +351,7 @@ function criarFlappyBird(){
 
         som_HIT.play();
         
-        setTimeout(() => { mudarTela(telas.INICIO); }, 150);//Esperando 150 miléssimos de segundo para mudar para a tela de Início
+        setTimeout(() => { mudarTela(telas.GAMEOVER); }, 150);//Esperando 150 miléssimos de segundo para mudar para a tela de Início
 
         return;
       }
@@ -408,6 +435,18 @@ telas.JOGO = {
   },
   click(){
     globais.flappyBird.pula();
+  }
+};
+/*Tela de Game Over*/
+telas.GAMEOVER = {
+  desenha(){
+    messageGameOver.desenha();
+  },
+  atualiza(){
+
+  },
+  click(){
+    mudarTela(telas.INICIO);
   }
 };
 
