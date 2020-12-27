@@ -61,6 +61,33 @@ const cenario = {
     
   };
 
+/*Criando Placar - Placar com a pontuação do usuário*/
+function criarPlacar(){
+
+  const placar = {
+
+    /*Pontuação do usuário*/
+    pontuacao: 0,
+
+    /*Função que atualiza o valor da pontuação*/
+    atualiza(){
+      if(frames % 20 === 0){
+        this.pontuacao += 1;
+      }
+    },
+
+    /*Função que desenha a pontuação na tela*/
+    desenha(){
+      contexto.font = '15px "Press Start 2P"';
+      contexto.textAlign = 'right';
+      contexto.fillStyle = 'white';
+      contexto.fillText(`${this.pontuacao}`, canvas.width - 10, 25);
+    }
+  }
+
+  return placar;
+}
+
 /*Criando Chão - Chão do cénario*/
 function criarChao(){
 
@@ -418,18 +445,24 @@ const telas = {
 };
 /*Tela com a parte jogável*/
 telas.JOGO = {
+  /*Inicializa o placar do jogo*/
+  inicializa(){
+    globais.placar = criarPlacar();
+  },
   /*Desenha todos os elementos da tela*/
   desenha(){
     cenario.desenha();
     globais.canos.desenha();
     globais.chao.desenha();
     globais.flappyBird.desenha();
+    globais.placar.desenha();
   },
   /*Atualiza os elementos da tela*/
   atualiza(){
     globais.flappyBird.atualiza();
     globais.canos.atualiza();
     globais.chao.atualiza();
+    globais.placar.atualiza();
   },
   click(){
     globais.flappyBird.pula();
