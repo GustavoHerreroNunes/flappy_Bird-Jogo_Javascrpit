@@ -67,7 +67,7 @@ function criarPlacar(){
   const placar = {
 
     /*Pontuação do usuário*/
-    pontuacao: 0,
+    pontuacao: 200,
 
     /*Função que atualiza o valor da pontuação*/
     atualiza(){
@@ -86,6 +86,38 @@ function criarPlacar(){
   }
 
   return placar;
+}
+
+/*Criando Medalha - Medalha que o usuário ganhou pela pontuação*/
+function criarMedalha(){
+
+  const medalha = {
+    
+    /*Pontuação total do usuário*/
+    pontuacao: globais.placar.pontuacao,
+
+    /*Função para desenhar o objeto*/
+    desenha(){
+      /*0 - 20 pontos: Participação :)*/
+      if(this.pontuacao <= 20){
+        console.log(':)');
+      }
+      /*21 - 50 pontos: Bronze ;)*/
+      else if(this.pontuacao <= 50){
+        console.log(';)');
+      }
+      /*51 - 199 pontos: Prata :o*/
+      else if(this.pontuacao <= 200){
+        console.log(':o');
+      }
+      /*200 - ? pontos: Ouro =D*/
+      else{
+        console.log('=D');
+      }
+    }
+  }
+
+  return medalha;
 }
 
 /*Criando Chão - Chão do cénario*/
@@ -473,9 +505,13 @@ telas.GAMEOVER = {
   
   ativa: false,//Indica se esta tela esta ativa
 
+  inicializa(){
+    globais.medalha = criarMedalha();
+  },
   desenha(){
     if(frames % 20 === 0){
       messageGameOver.desenha();
+      globais.medalha.desenha();
     }
   },
   atualiza(){
