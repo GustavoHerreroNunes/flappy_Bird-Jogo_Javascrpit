@@ -135,7 +135,7 @@ function criarCanos(){
     /*Função para desenhar o objeto*/
     desenha(){
       canos.pares.forEach(function(par){
-        const yRandom = par.y;
+        const yRandom = -250;
         
         /*Cano do céu*/
         const canoCeuX = par.x;
@@ -207,7 +207,7 @@ function criarCanos(){
 
         if(canos.fazColisaoCanos(par)){
           console.log('Você perdeu');
-          mudarTela(telas.INICIO);
+          mudarTela(telas.GAMEOVER);
         }
 
         if(par.x + canos.itemHeight <= 0){
@@ -264,13 +264,15 @@ const messageGameOver = {
 
   /*Função para desenhar o objeto*/
   desenha(){
-    contexto.drawImage(
-      sprites,
-      this.sorceX, this.sorceY,
-      this.itemWidth, this.itemHeight,
-      this.coordX, this.coordY,
-      this.itemWidth, this.itemHeight
-    );
+    if(frames % 20 === 0){
+      contexto.drawImage(
+        sprites,
+        this.sorceX, this.sorceY,
+        this.itemWidth, this.itemHeight,
+        this.coordX, this.coordY,
+        this.itemWidth, this.itemHeight
+      );
+    }
 
   }
 };
@@ -317,7 +319,7 @@ function criarFlappyBird(){
 
     /*Movimentos realizados pelo Flappy Bird durante a animção de bater as asas, indicados pelo Y onde o se encontra o desenho de cada movimento*/
     moviBaterAsas:[
-      {sorceY: 0}, //Asa para baixo (padrão)
+      {sorceY: 0}, //Asa para cima (padrão)
       {sorceY: 26}, //Asa no meio
       {sorceY: 52}, //Asa para baixo
       {sorceY: 26}, //Asa no meio
@@ -351,8 +353,8 @@ function criarFlappyBird(){
 
         som_HIT.play();
         
-        setTimeout(() => { mudarTela(telas.GAMEOVER); }, 150);//Esperando 150 miléssimos de segundo para mudar para a tela de Início
-
+        mudarTela(telas.GAMEOVER);
+        
         return;
       }
 
