@@ -135,7 +135,7 @@ function criarCanos(){
     /*Função para desenhar o objeto*/
     desenha(){
       canos.pares.forEach(function(par){
-        const yRandom = -250;
+        const yRandom = par.y;
         
         /*Cano do céu*/
         const canoCeuX = par.x;
@@ -206,7 +206,10 @@ function criarCanos(){
         par.x = par.x -2;
 
         if(canos.fazColisaoCanos(par)){
-          console.log('Você perdeu');
+          console.log('Game Over');
+          
+          som_HIT.play();
+          
           mudarTela(telas.GAMEOVER);
         }
 
@@ -264,16 +267,13 @@ const messageGameOver = {
 
   /*Função para desenhar o objeto*/
   desenha(){
-    if(frames % 20 === 0){
-      contexto.drawImage(
-        sprites,
-        this.sorceX, this.sorceY,
-        this.itemWidth, this.itemHeight,
-        this.coordX, this.coordY,
-        this.itemWidth, this.itemHeight
-      );
-    }
-
+    contexto.drawImage(
+      sprites,
+      this.sorceX, this.sorceY,
+      this.itemWidth, this.itemHeight,
+      this.coordX, this.coordY,
+      this.itemWidth, this.itemHeight
+    );
   }
 };
 
@@ -350,9 +350,9 @@ function criarFlappyBird(){
     atualiza(){
       if(fazColisao(flappyBird, globais.chao)){
         console.info('Game Over');
-
-        som_HIT.play();
         
+        som_HIT.play();
+
         mudarTela(telas.GAMEOVER);
         
         return;
@@ -442,7 +442,9 @@ telas.JOGO = {
 /*Tela de Game Over*/
 telas.GAMEOVER = {
   desenha(){
-    messageGameOver.desenha();
+    if(frames % 20 === 0){
+      messageGameOver.desenha();
+    }
   },
   atualiza(){
 
