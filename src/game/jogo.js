@@ -208,8 +208,6 @@ function criarCanos(){
         if(canos.fazColisaoCanos(par)){
           console.log('Game Over');
           
-          som_HIT.play();
-          
           mudarTela(telas.GAMEOVER);
         }
 
@@ -350,8 +348,6 @@ function criarFlappyBird(){
     atualiza(){
       if(fazColisao(flappyBird, globais.chao)){
         console.info('Game Over');
-        
-        som_HIT.play();
 
         mudarTela(telas.GAMEOVER);
         
@@ -441,15 +437,23 @@ telas.JOGO = {
 };
 /*Tela de Game Over*/
 telas.GAMEOVER = {
+  
+  ativa: false,//Indica se esta tela esta ativa
+
   desenha(){
     if(frames % 20 === 0){
       messageGameOver.desenha();
     }
   },
   atualiza(){
+    if(!this.ativa){
+      som_HIT.play();
+      this.ativa = true;
+    }
 
   },
   click(){
+    this.ativa = false;
     mudarTela(telas.INICIO);
   }
 };
