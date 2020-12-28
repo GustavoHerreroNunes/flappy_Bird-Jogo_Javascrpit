@@ -67,7 +67,7 @@ function criarPlacar(){
   const placar = {
 
     /*Pontuação do usuário*/
-    pontuacao: 200,
+    pontuacao: 0,
 
     /*Função que atualiza o valor da pontuação*/
     atualiza(){
@@ -505,6 +505,8 @@ telas.GAMEOVER = {
   
   ativa: false,//Indica se esta tela esta ativa
 
+  delay: false,//Indica se houve uma espera para mudar para a "telas.INICIO"
+
   inicializa(){
     globais.medalha = criarMedalha();
   },
@@ -515,15 +517,24 @@ telas.GAMEOVER = {
     }
   },
   atualiza(){
+    /*Verificando se a tela não estava ativa*/
     if(!this.ativa){
       som_HIT.play();
       this.ativa = true;
     }
+    /*Verificando se passaram 170 frames para poder trocar para a "telas.INICIO"*/
+    if(frames % 170 === 0){
+      this.delay = true;
+    }
 
   },
   click(){
-    this.ativa = false;
-    mudarTela(telas.INICIO);
+    /*Verificando se passou o delay de 170 frames*/
+    if(this.delay){
+      this.delay = false;
+      this.ativa = false;
+      mudarTela(telas.INICIO);
+    }
   }
 };
 
