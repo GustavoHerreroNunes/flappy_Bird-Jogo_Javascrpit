@@ -92,28 +92,76 @@ function criarPlacar(){
 function criarMedalha(){
 
   const medalha = {
+    /*Coordenadas para o objeto dentro do arquivo "sprites.png"*/
+    sorceX: 0,
+    sorceY: 0,
+  
+    /*Largura e Altura do objeto dentro do arquivo e da página*/
+    itemWidth: 44,
+    itemHeight: 44,
+  
+    /*Coordenadas para o objeto dentro de "contexto"*/
+    coordX: messageGameOver.coordX + 27,
+    coordY: messageGameOver.coordY + 87,
     
     /*Pontuação total do usuário*/
     pontuacao: globais.placar.pontuacao,
+
+    /*Nome da Medalha*/
+    nome: {
+      text: '',//Nome
+      color: ''//Cor do texto
+    },
 
     /*Função para desenhar o objeto*/
     desenha(){
       /*0 - 20 pontos: Participação :)*/
       if(this.pontuacao <= 20){
-        console.log(':)');
+        this.sorceX = 0;
+        this.sorceY = 78;
+
+        this.nome.text = 'Participou';
+        this.nome.color = 'white';
       }
       /*21 - 50 pontos: Bronze ;)*/
       else if(this.pontuacao <= 50){
-        console.log(';)');
+        this.sorceX = 48;
+        this.sorceY = 124;
+
+        this.nome.text = 'Bronze';
+        this.nome.color = '#CF862B';
       }
       /*51 - 199 pontos: Prata :o*/
-      else if(this.pontuacao <= 200){
-        console.log(':o');
+      else if(this.pontuacao <= 200){       
+        this.sorceX = 48;
+        this.sorceY = 78;
+
+        this.nome.text = 'Prata';
+        this.nome.color = '#8C8686';
       }
       /*200 - ? pontos: Ouro =D*/
       else{
-        console.log('=D');
+        this.sorceX = 0;
+        this.sorceY = 124;
+
+        this.nome.text = 'Ouro';
+        this.nome.color = '#C19C25';
       }
+
+      /*Medalha*/
+      contexto.drawImage(
+        sprites,
+        this.sorceX, this.sorceY,
+        this.itemWidth, this.itemHeight,
+        this.coordX, this.coordY,
+        this.itemWidth, this.itemHeight
+      );
+      
+      /*Nome da Medalha*/
+      contexto.font = '8px "Press Start 2P"';
+      contexto.textAlign = 'center';
+      contexto.fillStyle = `${this.nome.color}`;
+      contexto.fillText(`${this.nome.text}`, this.coordX + (this.itemWidth/2), this.coordY + this.itemHeight + 12);
     }
   }
 
