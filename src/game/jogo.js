@@ -12,6 +12,9 @@ console.info('DevSoutinho');
 
 let frames = 0;
 
+/*Pontuação do usuário*/
+let pontos = 0;
+
 const som_HIT = new Audio();
 som_HIT.src = '../../efeitos/hit.wav';
 
@@ -66,13 +69,10 @@ function criarPlacar(){
 
   const placar = {
 
-    /*Pontuação do usuário*/
-    pontuacao: 0,
-
     /*Função que atualiza o valor da pontuação*/
     atualiza(){
       if(frames % 20 === 0){
-        this.pontuacao += 1;
+        pontos += 1;
       }
     },
 
@@ -81,7 +81,7 @@ function criarPlacar(){
       contexto.font = '15px "Press Start 2P"';
       contexto.textAlign = 'right';
       contexto.fillStyle = 'white';
-      contexto.fillText(`${this.pontuacao}`, canvas.width - 10, 25);
+      contexto.fillText(`${pontos}`, canvas.width - 10, 25);
     }
   }
 
@@ -103,9 +103,6 @@ function criarMedalha(){
     /*Coordenadas para o objeto dentro de "contexto"*/
     coordX: messageGameOver.coordX + 27,
     coordY: messageGameOver.coordY + 87,
-    
-    /*Pontuação total do usuário*/
-    pontuacao: globais.placar.pontuacao,
 
     /*Nome da Medalha*/
     nome: {
@@ -116,7 +113,7 @@ function criarMedalha(){
     /*Função para desenhar o objeto*/
     desenha(){
       /*0 - 20 pontos: Participação :)*/
-      if(this.pontuacao <= 20){
+      if(pontos <= 20){
         this.sorceX = 0;
         this.sorceY = 78;
 
@@ -124,7 +121,7 @@ function criarMedalha(){
         this.nome.color = 'white';
       }
       /*21 - 50 pontos: Bronze ;)*/
-      else if(this.pontuacao <= 50){
+      else if(pontos <= 50){
         this.sorceX = 48;
         this.sorceY = 124;
 
@@ -132,7 +129,7 @@ function criarMedalha(){
         this.nome.color = '#CF862B';
       }
       /*51 - 199 pontos: Prata :o*/
-      else if(this.pontuacao <= 200){       
+      else if(pontos <= 200){       
         this.sorceX = 48;
         this.sorceY = 78;
 
@@ -379,6 +376,16 @@ const messageGameOver = {
       this.coordX, this.coordY,
       this.itemWidth, this.itemHeight
     );
+
+    /*Desenhando pontuação do usuário*/
+    contexto.font = '10px "Press Start 2P"';
+    contexto.textAlign = 'right';
+    contexto.fillStyle = 'black';
+    contexto.fillText(`${pontos}`, this.coordX + this.itemWidth - 21, this.coordY + 92);
+    contexto.font = '10px "Press Start 2P"';
+    contexto.textAlign = 'right';
+    contexto.fillStyle = 'white';
+    contexto.fillText(`${pontos}`, this.coordX + this.itemWidth - 21, this.coordY + 90);
   }
 };
 
@@ -581,6 +588,7 @@ telas.GAMEOVER = {
     if(this.delay){
       this.delay = false;
       this.ativa = false;
+      pontos = 0;
       mudarTela(telas.INICIO);
     }
   }
